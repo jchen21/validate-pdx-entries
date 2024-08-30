@@ -1,0 +1,21 @@
+<component name="libraryTable">
+  <library name="geode-dependencies">
+    <ANNOTATIONS>
+      <root url="jar://$USER_HOME$/Downloads/vmware-gemfire-9.15.4/lib/geode-dependencies.jar!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="jar://$USER_HOME$/Downloads/vmware-gemfire-9.15.4/lib/geode-dependencies.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/Downloads/vmware-gemfire-9.15.4/lib/geode-dependencies.jar!/" />
+    </JAVADOC>
+    <NATIVE>
+      <root url="jar://$USER_HOME$/Downloads/vmware-gemfire-9.15.4/lib/geode-dependencies.jar!/" />
+    </NATIVE>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/Downloads/vmware-gemfire-9.15.4/lib/geode-dependencies.jar!/" />
+    </SOURCES>
+    <jarDirectory url="jar://$USER_HOME$/Downloads/vmware-gemfire-9.15.4/lib/geode-dependencies.jar!/" recursive="false" />
+    <jarDirectory url="jar://$USER_HOME$/Downloads/vmware-gemfire-9.15.4/lib/geode-dependencies.jar!/" recursive="false" type="SOURCES" />
+  </library>
+</component>
