@@ -37,7 +37,7 @@ public class ValidateAllEntriesFunction implements Function, Declarable {
 
     }
 
-    private void validateEntry(RegionFunctionContext rfc, Map.Entry<Object,Object> entry, AtomicInteger corruptPrimaryEntries, AtomicInteger corruptSecondaryEntries) {
+    private void validateEntry(RegionFunctionContext rfc, Map.Entry<Object, Object> entry, AtomicInteger corruptPrimaryEntries, AtomicInteger corruptSecondaryEntries) {
         try {
             Object value = entry.getValue();
             if (value instanceof PdxInstanceImpl) {
