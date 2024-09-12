@@ -10,6 +10,7 @@ import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.cache.client.ClientCacheFactory;
 import org.apache.geode.cache.client.ClientRegionShortcut;
 
+import java.util.ArrayList;
 
 
 public class ClientApp {
@@ -50,13 +51,15 @@ public class ClientApp {
 
     private void populateRegion(Region region) {
         for (int i = 0; i < 10; i++) {
-            region.put(i, new IdAndName("" + i, "name" + i));
+            ArrayList list = new ArrayList<>();
+            list.add(new IdAndName("" + i, "name" + i));
+            region.put(i, list);
         }
     }
 
     private void createClient() {
         ClientCache clientCache = new ClientCacheFactory().addPoolLocator("viking.intranet.hyperic.net", 10334).create();
-        Region region = clientCache.createClientRegionFactory(ClientRegionShortcut.CACHING_PROXY).create("testRegion");
+        Region region = clientCache.createClientRegionFactory(ClientRegionShortcut.PROXY).create("testRegion");
         populateRegion(region);
     }
 

@@ -16,6 +16,7 @@ import org.apache.geode.pdx.internal.PdxField;
 import org.apache.geode.pdx.internal.PdxInstanceImpl;
 import org.apache.geode.pdx.internal.PdxType;
 
+import java.util.List;
 import java.util.Map;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -41,28 +42,16 @@ public class ValidateAllEntriesFunction implements Function, Declarable {
         try {
             Object value = entry.getValue();
             if (value instanceof PdxInstanceImpl) {
-                PdxInstanceImpl pdxInstance = (PdxInstanceImpl) value;
-                PdxType pdxType = pdxInstance.getPdxType();
-                for (PdxField pdxField : pdxType.getFields()) {
-                    String fieldName = pdxField.getFieldName();
-                    try {
-                        pdxInstance.getField(fieldName);
-                    } catch (Exception e) {
-                        String isPrimaryStr;
-                        if (isPrimary(rfc, entry.getKey())) {
-                            isPrimaryStr = "primary";
-                            corruptPrimaryEntries.incrementAndGet();
-                        } else {
-                            isPrimaryStr = "secondary";
-                            corruptSecondaryEntries.incrementAndGet();
-                        }
-                        rfc.getCache().getLogger().warning("For " + isPrimaryStr + " entry with key=" + entry.getKey() + ", failed to get PDX field " + fieldName + " for PDX " + pdxInstance, e);
-                        break; // Stopping trying the rest of the PDX fields in the entry
+                validatePdxInstanceImpl((PdxInstanceImpl) value);
+            } else if (value instanceof List) {
+                ((List) value).stream().forEach(element -> {
+                    if (element instanceof PdxInstanceImpl) {
+                        validatePdxInstanceImpl((PdxInstanceImpl) element);
                     }
-                }
+                });
             }
         } catch (Exception e) {
-            String isPrimaryStr = null;
+            String isPrimaryStr;
             if (isPrimary(rfc, entry.getKey())) {
                 isPrimaryStr = "primary";
                 corruptPrimaryEntries.incrementAndGet();
@@ -71,6 +60,14 @@ public class ValidateAllEntriesFunction implements Function, Declarable {
                 corruptSecondaryEntries.incrementAndGet();
             }
             rfc.getCache().getLogger().warning("Failed to deserialize value for " + isPrimaryStr + " entry with key=" + entry.getKey(), e);
+        }
+    }
+
+    private void validatePdxInstanceImpl(PdxInstanceImpl pdxInstanceImpl) {
+        PdxType pdxType = pdxInstanceImpl.getPdxType();
+        for (PdxField pdxField : pdxType.getFields()) {
+            String fieldName = pdxField.getFieldName();
+            pdxInstanceImpl.getField(fieldName);
         }
     }
 
